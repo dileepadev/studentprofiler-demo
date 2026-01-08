@@ -1,1 +1,15 @@
 .vscode/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.DS_Store
+# Firebase service account keys
+**/firebase/serviceAccountKey.json
+# User uploads
+studentprofiler-demo-web-app/uploads/*
+!studentprofiler-demo-web-app/uploads/.gitkeep
