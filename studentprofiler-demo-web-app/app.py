@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, redirect, Response
+from werkzeug.utils import secure_filename
 import firebase_admin
 from firebase_admin import credentials, firestore
 
@@ -145,11 +146,12 @@ def upload():
             return redirect(request.url)
 
         video_file = request.files['video']
-        if video_file.filename == '':
+        if not video_file.filename:
             return redirect(request.url)
 
+        filename = secure_filename(video_file.filename)
         # Save the uploaded video to the "uploads" directory
-        video_path = os.path.join('uploads', video_file.filename)
+        video_path = os.path.join('uploads', filename)
         video_file.save(video_path)
 
         print("Saved uploaded video to " + video_path)
@@ -157,13 +159,16 @@ def upload():
         # return video_path as a json response
         return jsonify(video_path)
 
+    return redirect('/')
+
 
 @app.route('/video_feed', methods=['GET', 'POST'])
 def video_feed():
     if request.method == 'GET':
         print("Received a GET request to /video_feed")
-        print("videoPath = " + request.args.get('videoPath'))
-        received_video = analyze_emotions(request.args.get('videoPath'))
+        video_path = request.args.get('videoPath')
+        print(f"videoPath = {video_path}")
+        received_video = analyze_emotions(video_path)
         mime_type = 'multipart/x-mixed-replace; boundary=frame'
         if received_video is None:
             print("Received video is None")
@@ -171,6 +176,8 @@ def video_feed():
         else:
             print("Received video is not None")
             return Response(received_video, mimetype=mime_type)
+
+    return "Method Not Allowed", 405
 
 
 @app.route('/emotional_values', methods=['GET'])
@@ -184,13 +191,19 @@ def emotional_values():
 
 @app.route('/plan', methods=['POST'])
 def plan():
-    if request.method == 'POST':
-        request_data = request.get_json()
-        learning_style = request_data['learningStyle']
-        set_number = request_data['setNumber']
-        result = get_plan(learning_style, set_number)
+    request_data = request.get_json()
+    if not request_data:
+        return jsonify({'error': 'Invalid JSON'}), 400
 
-        return jsonify(result)
+    learning_style = request_data.get('learningStyle')
+    set_number = request_data.get('setNumber')
+
+    if not learning_style or not set_number:
+        return jsonify({'error': 'Missing parameters'}), 400
+
+    result = get_plan(learning_style, set_number)
+
+    return jsonify(result)
 
 
 @app.route('/saveplan', methods=['POST'])
