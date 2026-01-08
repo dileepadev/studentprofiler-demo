@@ -13,3 +13,7 @@ venv/
 # User uploads
 studentprofiler-demo-web-app/uploads/*
 !studentprofiler-demo-web-app/uploads/.gitkeep
+
+# Flutter Firebase config files
+studentprofiler-demo-mobile-app/android/app/google-services.json
+studentprofiler-demo-mobile-app/ios/Runner/GoogleService-Info.plist
