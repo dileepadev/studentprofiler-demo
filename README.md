@@ -1,4 +1,4 @@
-# Student Profiler – Demo
+# Student Profiler Demo
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/dileepadev/studentprofiler-demo?color=d62936&label=Repo%20Size)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/dileepadev/studentprofiler-demo?color=blue&label=Code%20Size)

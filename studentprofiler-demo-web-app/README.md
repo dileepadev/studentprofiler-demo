@@ -1,4 +1,4 @@
-# Student Profiler Demo Web App
+# Student Profiler Demo - Web App
 
 This is a demo web application for the Student Profiler system, designed to analyze student behavior and learning styles using machine learning models to generate personalized education plans.
 
