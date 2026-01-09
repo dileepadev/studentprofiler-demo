@@ -106,11 +106,3 @@ def analyze_emotions(video_path):
             emotion_count[emotion_label] += 1
 
     cap.release()
-
-    # Calculate percentages
-    total_count = sum(emotion_count.values())
-    emotion_percentages = {emotion: (
-        count / total_count) * 100 for emotion, count in emotion_count.items()}
-
-    # Return the emotion percentages as a Flask jsonify response
-    return jsonify(emotion_percentages)
